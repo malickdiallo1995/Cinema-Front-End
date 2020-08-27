@@ -1,0 +1,66 @@
+ <div class="container">
+   <div class="row">
+     <div class="col-md-4">
+
+       <ul *ngIf="villes" class="list-group">
+       <!-- Si currentVille == V on applique la classe active -->
+         <li [ngClass]="v==currentVille?'active':''  " *ngFor="let v of villes._embedded.villes" class="list-group-item clickable"
+             (click)="onGetCinema(v) ; onSave(v)" >
+            {{v.name}}
+         </li>
+       </ul>
+
+     </div>
+     <div class="col-md-8">
+       <div class="panel panel-default" *ngIf="ville">
+         <!-- On recupere et affiche  la ville selectionnée -->
+         <div class="panel-heading" >List Cinemas {{ville.name}}</div>
+         <div class="panel-body">
+           <!-- On recupere et affiche  les  cinemas d'une ville selectionnée -->
+           <ul *ngIf="cinemas" class="nav nav-pills">
+             <li [ngClass]="c==currentCinema?'active':''  "  *ngFor="let c of cinemas._embedded.cinemas" class=" clickable">
+               <a (click)="onGetSalles(c)">{{c.nom}}</a>
+             </li>
+           </ul>
+
+           <!-- On recupere et affiche  les  salles d'un cinema selectionné -->
+           <div class="row" *ngIf="salles">
+              <div *ngFor="let s of salles._embedded.salleses" >
+                <div class="col-md-6">
+                  <div class="panel panel-default ">
+                    <div class="panel-heading">{{s.name}}</div>
+
+                    <div class="panel-body" *ngIf="s.projections">
+                      <!-- Afficher l'image pour chaque FIlM -->
+                      <div class="row">
+
+                        <div class="col-md-5"><img width="140px" src="{{cinemaService.host+'/imageFilm/'+s.projections._embedded.projections[0].film.id}}"> </div>
+                        <div class="col-md-7" >
+                          <ul class="list-group">
+                            <li class="list-group-item">Seances : </li>
+                            <li  *ngFor="let p of s.projections._embedded.projections" class="list-group-item clickable" (click)="onGetTicketPlaces(p)" >
+                              <span> <strong>Heure</strong> : {{p.seance .heureDebut }} </span> <br>
+                              <span> <strong>Prix</strong> : {{p.prix }} Eur </span>
+                            </li>
+                          </ul>
+                        </div>
+
+                      </div>
+                      <div class="row">
+                        <!-- Affichage des Ticket des projetjs-->
+                        <div *ngIf="currentProjection.tickets">
+                          <button>AA</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+           </div>
+
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
